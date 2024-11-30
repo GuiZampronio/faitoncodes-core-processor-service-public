@@ -28,4 +28,6 @@ public class ExerciseInfoDTO {
 
     private String teacherName;
 
+    private String dueDateModal;
+
 }

@@ -52,4 +52,27 @@ public class DateFormatterUtil {
                 .append(dateTime.getYear())
                 .toString();
     }
+
+    public static String extractDateModalDueDate(LocalDateTime dateTime){
+        StringBuilder minuteFormatted = new StringBuilder();
+
+        if(dateTime.getMinute() >=0 && dateTime.getMinute() <=9 ){
+            minuteFormatted.append("0");
+        }
+        minuteFormatted.append(dateTime.getMinute());
+
+        StringBuilder finalFormattedDate = new StringBuilder();
+        return finalFormattedDate
+                .append(dateTime.getYear())
+                .append("-")
+                .append(dateTime.getMonth().getValue())
+                .append("-")
+                .append(dateTime.getDayOfMonth())
+                .append(" ")
+                .append(dateTime.getHour())
+                .append(":")
+                .append(minuteFormatted.toString())
+                .toString();
+
+    }
 }
