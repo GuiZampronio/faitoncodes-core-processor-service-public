@@ -63,8 +63,7 @@ public class ExercisesService {
               .title(exerciseDTO.getTitle())
               .description(exerciseDTO.getDescription() != null? exerciseDTO.getDescription() : null)
               .dueDate(dueTimeExercise)
-              .creationDate(LocalDateTime.now())
-              .updatedDate(LocalDateTime.now())
+              .creationDate(LocalDateTime.now().atZone(ZoneId.of("America/Sao_Paulo")).toLocalDateTime())
               .classId(exerciseDTO.getClassId())
               .build();
 
@@ -158,6 +157,8 @@ public class ExercisesService {
          updatedExercise.setDueDate(dueTimeExercise);
       }
 
+      updatedExercise.setUpdatedDate(LocalDateTime.now().atZone(ZoneId.of("America/Sao_Paulo")).toLocalDateTime());
+
       modelMapper.getConfiguration().setPropertyCondition(Conditions.isNotNull());
       modelMapper.addMappings(customMappingExerciseDTO);
       modelMapper.map(exerciseDTO, updatedExercise);
@@ -215,6 +216,7 @@ public class ExercisesService {
                     .description(exerciseDao.getDescription())
                     .testCases(getTestCasesFromExercise(exerciseDao.getId()))
                     .dueDate(DateFormatterUtil.extractDateFormDueDate(exerciseDao.getDueDate()))
+                    .dueDateModal(DateFormatterUtil.extractDateModalDueDate(exerciseDao.getDueDate()))
                     .updatedDate(exerciseDao.getUpdatedDate() != null? DateFormatterUtil.extractDateFormUpdatedDateForGetExerciseId(exerciseDao.getUpdatedDate()) : null)
                     .classId(exerciseDao.getClassId())
                     .teacherName(userRepository.getUserName(classRepository.findTeacherIdByClassId(exerciseDao.getClassId())))

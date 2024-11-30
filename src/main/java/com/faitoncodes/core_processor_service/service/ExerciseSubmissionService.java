@@ -60,12 +60,11 @@ public class ExerciseSubmissionService {
 
         if(optionalExercise.isPresent()){
             if(optionalExercise.get().getDueDate().isBefore(actualDateTime.toLocalDateTime())){
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Submissao passou do prazo de entrega do exercicio.");
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Submissão passou do prazo de entrega do exercicio.");
             }
         }else {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Exercicio nao encontrado.");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Exercício nao encontrado.");
         }
-
 
         Optional<ExerciseSubmission> OptionalExistedSubmission = exerciseSubmissionRepository.findByStudentIdAndExerciseId(exerciseSubmissionRequest.getStudentId(), exerciseSubmissionRequest.getExerciseId());
 
@@ -73,7 +72,7 @@ public class ExerciseSubmissionService {
             ExerciseSubmission existedSubmission = OptionalExistedSubmission.get();
             existedSubmission.setStudent_code(exerciseSubmissionRequest.getCodeSent());
             existedSubmission.setExercise_status(0);
-            existedSubmission.setSubmission_date(LocalDateTime.now());
+            existedSubmission.setSubmission_date(LocalDateTime.now().atZone(ZoneId.of("America/Sao_Paulo")).toLocalDateTime());
 
             exerciseSubmissionRepository.save(existedSubmission);
 
@@ -86,7 +85,7 @@ public class ExerciseSubmissionService {
                 .exerciseId(exerciseSubmissionRequest.getExerciseId())
                 .studentId(exerciseSubmissionRequest.getStudentId())
                 .student_code(exerciseSubmissionRequest.getCodeSent())
-                .submission_date(LocalDateTime.now())
+                .submission_date(LocalDateTime.now().atZone(ZoneId.of("America/Sao_Paulo")).toLocalDateTime())
                 .build();
 
         exerciseSubmissionRepository.save(newExerciseSubmission);
